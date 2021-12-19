@@ -1,4 +1,4 @@
-FROM linuxserver/openvscode-server:1.63.0
+FROM linuxserver/code-server:3.12.0
 
 RUN apt-get update && apt-get install -y \
   graphviz \
@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
 ARG ANACONDA_RELEASE=Anaconda3-2021.11-Linux-x86_64.sh
 RUN wget https://repo.anaconda.com/archive/${ANACONDA_RELEASE} -P /config/ \
     && bash /config/${ANACONDA_RELEASE} -b \
-    && rm -f /config/${ANACONDA_RELEASE}
+    && rm -f /config/${ANACONDA_RELEASE} \
+    && echo "\nexport PATH=/config/anaconda3/bin:\${PATH}" >> /config/.bashrc
 
 ARG PATH="/config/anaconda3/bin:${PATH}"
 RUN pip install --no-cache-dir diagrams
