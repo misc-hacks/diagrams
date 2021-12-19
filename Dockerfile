@@ -18,3 +18,5 @@ RUN wget https://repo.anaconda.com/archive/${ANACONDA_RELEASE} -P /config/ \
     && rm -f /config/${ANACONDA_RELEASE}
 
 RUN pip install --no-cache-dir diagrams
+
+User root
