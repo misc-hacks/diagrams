@@ -12,4 +12,4 @@ RUN apt-get update \
         /var/lib/apt/lists/* \
         /var/tmp/*
 
-RUN pip install --no-cache-dir diagrams
+RUN pip install --no-cache-dir diagrams jupyter
