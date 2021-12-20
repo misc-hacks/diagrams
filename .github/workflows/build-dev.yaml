@@ -16,7 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         image:
-          - { platforms: "linux/amd64,linux/arm64/v8,linux/arm/v7" }
+          - { suffix: "", file: "Dockerfile", platforms: "linux/amd64,linux/arm64/v8" }
+          - { suffix: "-slim", file: "slim.Dockerfile" platforms: "linux/amd64,linux/arm64/v8,linux/arm/v7" }
 
     steps:
       - uses: actions/checkout@v2
@@ -35,7 +36,7 @@ jobs:
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository }}
           echo "IMAGE_ID=${IMAGE_ID}" >> $GITHUB_ENV
-          VERSION=$(echo "${{ github.base_ref }}" | sed -e 's/^v//')-dev
+          VERSION=$(echo "${{ github.base_ref }}" | sed -e 's/^v//')${{ matrix.image.suffix }}-dev
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Build and Push
@@ -44,3 +45,4 @@ jobs:
           platforms: ${{ matrix.image.platforms }}
           push: true
           tags: ${{ env.IMAGE_ID }}:${{ env.VERSION }}
+          file: ${{ matrix.image.file }}
