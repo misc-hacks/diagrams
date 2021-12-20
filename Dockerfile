@@ -1,15 +1,15 @@
-FROM linuxserver/code-server:3.12.0
+FROM --platform=${TARGETPLATFORM} ghcr.io/misc-hacks/ubuntu-dev:20.04
 
-RUN apt-get update && apt-get install -y \
+ARG PACKAGES="\
   graphviz \
-  wget \
-  && rm -rf /var/lib/apt/lists/*
+  python3-pip \
+"
+RUN apt-get update \
+    && apt-get install -y ${PACKAGES} \
+    && apt-get clean \
+    && rm -rf \
+        /tmp/* \
+        /var/lib/apt/lists/* \
+        /var/tmp/*
 
-ARG ANACONDA_RELEASE=Anaconda3-2021.11-Linux-x86_64.sh
-RUN wget https://repo.anaconda.com/archive/${ANACONDA_RELEASE} -P /config/ \
-    && bash /config/${ANACONDA_RELEASE} -b \
-    && rm -f /config/${ANACONDA_RELEASE} \
-    && echo "\nexport PATH=/config/anaconda3/bin:\${PATH}" >> /config/.bashrc
-
-ARG PATH="/config/anaconda3/bin:${PATH}"
 RUN pip install --no-cache-dir diagrams
