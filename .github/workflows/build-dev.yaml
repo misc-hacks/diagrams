@@ -34,8 +34,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          logout: false
+          password: ${{ secrets.PAT_CR }}
 
       - name: Determine variables
         run: |
